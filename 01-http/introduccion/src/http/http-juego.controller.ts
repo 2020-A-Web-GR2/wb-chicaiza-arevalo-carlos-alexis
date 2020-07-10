@@ -1,5 +1,19 @@
-import {BadRequestException, Body, Controller, Delete, Get, Header, HttpCode, Param, Post, Query} from "@nestjs/common";
+import {
+    BadRequestException,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Header,
+    HttpCode,
+    Param,
+    Post,
+    Query,
+    Req, Res
+} from "@nestjs/common";
 import {query} from "express";
+import {MascotaCreateDto} from "./dto/mascota.create-dto";
+import {validate, ValidationError} from "class-validator";
 
 // /juegos-http
 @Controller('juegos-http')
@@ -62,12 +76,48 @@ export class HttpJuegoController{
     }
 
     @Post('parametros-cuerpo')
-    parametrosCuerpo(
+    @HttpCode(200)
+    async parametrosCuerpo(
         @Body() parametrosDeCuerpo
-    ){
-        console.log('Parametros de cuerpo', parametrosDeCuerpo);
+    ) {
+        const mascotaValida = new MascotaCreateDto();
+        mascotaValida.casado = parametrosDeCuerpo.casado;
+        mascotaValida.edad = parametrosDeCuerpo.edad;
+        mascotaValida.castro = parametrosDeCuerpo.castro;
+        mascotaValida.nombre = parametrosDeCuerpo.nombre;
+        mascotaValida.peso = parametrosDeCuerpo.peso;
 
-        return 'Registro Creado';
+        try {
+            const errores: ValidationError[] = await validate(mascotaValida)
+            if (errores.length > 0) {
+                console.error('Errores: ', errores);
+                throw  new BadRequestException('Error Validando');
+            } else {
+                const mensajeCorrecto = {mensaje: "Se creo correctamente"};
+                return mensajeCorrecto;
+            }
+        } catch (e) {
+            console.error('Error', e);
+            throw  new BadRequestException('Error Validando')
+        }
+    }
+        //1 Guardar cookie insegura
+        //2 Guardar cookie segura
+        //3 Mostrar cookies
+
+    @Get('guardarCookieInsegura')
+    guardarCookieInsegura(
+        @Query() parametrosConsulta,
+        @Req() req,
+        @Res() res
+    ){
+        res.cookie(
+            'galletaInsegura',  //nombre
+            'tengoHambre',  //valor
+        );
+        const mensaje = { mensaje: 'ok'};
+        //no se peude suar return cuando se usa Res
+        res.send(mensaje);
     }
 
 }
