@@ -120,4 +120,44 @@ export class HttpJuegoController{
         res.send(mensaje);
     }
 
+    @Get('guardarCookieSegura')
+    guardarCookiesegura(
+        @Query() parametrosConsulta,
+        @Req() req,
+        @Res() res
+    ){
+        res.cookie(
+            'galletaSegura',  //nombre
+            'web :v',  //valor
+            {
+                secure: true
+            }
+        );
+        const mensaje = { mensaje: 'ok'};
+        //no se peude suar return cuando se usa Res
+        res.send(mensaje);
+    }
+
+    @Get('mostrarCookies')
+    mostrarCookies(
+        @Req() req
+    ){
+        const mensaje = {
+            sinFirmar: req.cookies,
+            firmadas: req.signedCookies
+        };
+        return mensaje;
+    }
+
+    @Get('guardarCookieFirmada')
+    public guardarCookieFirmada(
+        @Res() res
+    ){
+        res.cookie('firmada', 'poliburger', {signed: true});
+        const mensaje = {
+            mensaje: 'ok'
+        };
+        res.send(mensaje);
+    }
+
 }

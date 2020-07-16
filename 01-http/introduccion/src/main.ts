@@ -9,7 +9,7 @@ async function bootstrap() {
 
 
 
-  app.use(cookieParser());
+  app.use(cookieParser('Me gustan las polipapas'));
 //final configuracion
   await app.listen(3001);
 }
