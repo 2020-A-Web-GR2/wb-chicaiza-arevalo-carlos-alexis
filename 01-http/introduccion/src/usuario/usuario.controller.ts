@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -30,6 +30,8 @@ export class UsuarioController {
             id: this.idActual + 1,
             nombre: parametrosCuerpo.nombre
         };
+        console.log(parametrosCuerpo)
+        console.log(nuevoUsuario)
         this.arregloUsuario.push(nuevoUsuario);
         this.idActual = this.idActual + 1;
         return nuevoUsuario;
@@ -38,12 +40,37 @@ export class UsuarioController {
 
     @Get(':id')
     verUno(
-        @Param() parametosRuta
+        @Param() parametrosRuta
     ){
         const  indice = this.arregloUsuario.findIndex(
-            //(usuario) => usuario.id === Number(parametosRuta.id)
-            (usuario) => usuario.id === Number(parametosRuta.id)
+            //(usuario) => usuario.id === Number(parametrosRuta.id)
+            (usuario) => usuario.id === Number(parametrosRuta.id)
         )
+        return this.arregloUsuario[indice];
+    }
+
+    @Put(':id')
+    editarUno(
+        @Param() parametrosRuta,
+        @Body() parametrosCuerpo
+    ){
+        const  indice = this.arregloUsuario.findIndex(
+            //(usuario) => usuario.id === Number(parametrosRuta.id)
+            (usuario) => usuario.id === Number(parametrosRuta.id)
+        )
+        this.arregloUsuario[indice].nombre = parametrosCuerpo.nombre;
+        return this.arregloUsuario[indice];
+    }
+
+    @Delete(':id')
+    eliminarUno(
+        @Param() parametrosRuta
+    ){
+        const  indice = this.arregloUsuario.findIndex(
+            //(usuario) => usuario.id === Number(parametrosRuta.id)
+            (usuario) => usuario.id === Number(parametrosRuta.id)
+        )
+        this.arregloUsuario.splice(indice,1)
         return this.arregloUsuario[indice];
     }
 }
