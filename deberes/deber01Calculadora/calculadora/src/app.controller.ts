@@ -51,7 +51,7 @@ export class AppController {
           }
           //validacion
       }else{
-          res.send("usuario no registrado");
+          res.send("usuario no registrado, registrese en /guardar");
       }
     }
 
@@ -62,25 +62,29 @@ export class AppController {
         @Req() req,
         @Res() res
     ) {
-        const numerosResta = new CalculadoraRestaCreateDto()
-        numerosResta.n1 = parseFloat(parametrosCuerpo.n1)
-        numerosResta.n2 = parseFloat(parametrosCuerpo.n2)
-        //validacion
-        try {
-            const errores: ValidationError[] = await validate(numerosResta)
-            if (errores.length > 0) {
-                console.error('Errores: ', errores);
-                return "Error validando los numeros"
-            } else {
-                const resta = numerosResta.n1-numerosResta.n2;
-                const mensaje = {Resta: resta};
-                return mensaje
+        if(this.verificarUsuario(req)) {
+            const numerosResta = new CalculadoraRestaCreateDto()
+            numerosResta.n1 = parseFloat(parametrosCuerpo.n1)
+            numerosResta.n2 = parseFloat(parametrosCuerpo.n2)
+            //validacion
+            try {
+                const errores: ValidationError[] = await validate(numerosResta)
+                if (errores.length > 0) {
+                    console.error('Errores: ', errores);
+                    return "Error validando los numeros"
+                } else {
+                    const resta = numerosResta.n1-numerosResta.n2;
+                    const mensaje = {Resta: resta};
+                    return mensaje
+                }
+            } catch (e) {
+                console.error('Error', e);
+                throw  new BadRequestException('Error Validando los numeros')
             }
-        } catch (e) {
-            console.error('Error', e);
-            throw  new BadRequestException('Error Validando los numeros')
+            //validacion
+        }else{
+            res.send("usuario no registrado, registrese en /guardar");
         }
-        //validacion
     }
 
     @Delete('multiplicacion')
@@ -90,25 +94,29 @@ export class AppController {
         @Req() req,
         @Res() res
     ) {
-        const numerosMultiplicacion = new CalculadoraMultiplicacionCreateDto()
-        numerosMultiplicacion.n1 = parseFloat(parametrosCabecera.n1)
-        numerosMultiplicacion.n2 = parseFloat(parametrosCabecera.n2)
-        //validacion
-        try {
-            const errores: ValidationError[] = await validate(numerosMultiplicacion)
-            if (errores.length > 0) {
-                console.error('Errores: ', errores);
-                return "Error validando los numeros"
-            } else {
-                const multiplicacion = numerosMultiplicacion.n1*numerosMultiplicacion.n2;
-                const mensaje = {Multiplicacion: multiplicacion};
-                return mensaje
+        if(this.verificarUsuario(req)) {
+            const numerosMultiplicacion = new CalculadoraMultiplicacionCreateDto()
+            numerosMultiplicacion.n1 = parseFloat(parametrosCabecera.n1)
+            numerosMultiplicacion.n2 = parseFloat(parametrosCabecera.n2)
+            //validacion
+            try {
+                const errores: ValidationError[] = await validate(numerosMultiplicacion)
+                if (errores.length > 0) {
+                    console.error('Errores: ', errores);
+                    return "Error validando los numeros"
+                } else {
+                    const multiplicacion = numerosMultiplicacion.n1*numerosMultiplicacion.n2;
+                    const mensaje = {Multiplicacion: multiplicacion};
+                    return mensaje
+                }
+            } catch (e) {
+                console.error('Error', e);
+                throw  new BadRequestException('Error Validando los numeros')
             }
-        } catch (e) {
-            console.error('Error', e);
-            throw  new BadRequestException('Error Validando los numeros')
+            //validacion
+        }else{
+            res.send("usuario no registrado, registrese en /guardar");
         }
-        //validacion
     }
 
     @Post('division/n1/:n1/n2/:n2')
@@ -118,25 +126,29 @@ export class AppController {
         @Req() req,
         @Res() res
     ) {
-        const numerosDivision = new CalculadoraDivisionCreateDto()
-        numerosDivision.n1 = parseFloat(parametrosRuta.n1)
-        numerosDivision.n2 = parseFloat(parametrosRuta.n2)
-        //validacion
-        try {
-            const errores: ValidationError[] = await validate(numerosDivision)
-            if (errores.length > 0) {
-                console.error('Errores: ', errores);
-                return "Error validando los numeros, recuerde que n2 no debe ser 0"
-            } else {
-                const division = numerosDivision.n1/numerosDivision.n2;
-                const mensaje = {Division: division};
-                return mensaje
+        if(this.verificarUsuario(req)) {
+            const numerosDivision = new CalculadoraDivisionCreateDto()
+            numerosDivision.n1 = parseFloat(parametrosRuta.n1)
+            numerosDivision.n2 = parseFloat(parametrosRuta.n2)
+            //validacion
+            try {
+                const errores: ValidationError[] = await validate(numerosDivision)
+                if (errores.length > 0) {
+                    console.error('Errores: ', errores);
+                    return "Error validando los numeros, recuerde que n2 no debe ser 0"
+                } else {
+                    const division = numerosDivision.n1/numerosDivision.n2;
+                    const mensaje = {Division: division};
+                    return mensaje
+                }
+            } catch (e) {
+                console.error('Error', e);
+                throw  new BadRequestException('Error Validando los numeros')
             }
-        } catch (e) {
-            console.error('Error', e);
-            throw  new BadRequestException('Error Validando los numeros')
+            //validacion
+        }else{
+            res.send("usuario no registrado, registrese en /guardar");
         }
-        //validacion
     }
 
     @Get('guardar')

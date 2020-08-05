@@ -44,25 +44,25 @@ export class UsuarioEntity {
     cedula: string;
 
     @Column({
-        name: 'sueldo'
+        name: 'sueldo',
         nullable: true,
         type: 'decimal',
-        precision: 10,  //100000000.
-        scale: 4,   //.0001
+        precision: 10, // 1000000000.
+        scale: 4, // .0001
     })
-    sueldo?:number;
+    sueldo?: number;
 
     @Column({
-        name: 'fecha_nacimiento'
         nullable: true,
         type: 'date',
+        name: 'fecha_nacimiento'
     })
-    fechaNacimiento?:string;
+    fechaNacimiento?: string;
 
     @Column({
-        name: 'fecha_hora_nacimiento'
         nullable: true,
         type: 'datetime',
+        name: 'fecha_hora_nacimiento'
     })
-    fechaHoraNacimiento?:string;
+    fechaHoraNacimiento?: string;
 }
