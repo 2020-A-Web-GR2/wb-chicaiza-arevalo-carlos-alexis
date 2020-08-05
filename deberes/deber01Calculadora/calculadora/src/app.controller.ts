@@ -39,11 +39,27 @@ export class AppController {
               const errores: ValidationError[] = await validate(numerosSuma)
               if (errores.length > 0) {
                   console.error('Errores: ', errores);
-                  return "Error validando los numeros";
+                  res.send("Error validando los numeros");
               } else {
                   const suma = numerosSuma.n1 + numerosSuma.n2;
-                  const mensaje = {Suma: suma};
-                  res.send(mensaje);
+                  const puntajeActual = Number(req.signedCookies["puntaje"]);
+                  const puntajeNuevo = puntajeActual-Math.abs(suma);
+                  if(puntajeNuevo <= 0){
+                      const nombre = req.cookies["usuario"];
+                      const mensaje = {
+                          Suma: suma,
+                          Advertencia: nombre.concat(" haz terminado tus puntos, se te han restablecido de nuevo")
+                      };
+                      res.cookie('puntaje', '100', {signed: true});
+                      res.send(mensaje);
+                  }else {
+                      res.cookie('puntaje', puntajeNuevo, {signed: true});
+                      const mensaje = {
+                          Suma: suma,
+                          Puntaje: puntajeNuevo
+                      };
+                      res.send(mensaje);
+                  }
               }
           } catch (e) {
               console.error('Error', e);
@@ -71,11 +87,27 @@ export class AppController {
                 const errores: ValidationError[] = await validate(numerosResta)
                 if (errores.length > 0) {
                     console.error('Errores: ', errores);
-                    return "Error validando los numeros"
+                    res.send("Error validando los numeros");
                 } else {
                     const resta = numerosResta.n1-numerosResta.n2;
-                    const mensaje = {Resta: resta};
-                    return mensaje
+                    const puntajeActual = Number(req.signedCookies["puntaje"]);
+                    const puntajeNuevo = puntajeActual-Math.abs(resta);
+                    if(puntajeNuevo <= 0){
+                        const nombre = req.cookies["usuario"];
+                        const mensaje = {
+                            Resta: resta,
+                            Advertencia: nombre.concat(" haz terminado tus puntos, se te han restablecido de nuevo")
+                        };
+                        res.cookie('puntaje', '100', {signed: true});
+                        res.send(mensaje);
+                    }else {
+                        res.cookie('puntaje', puntajeNuevo, {signed: true});
+                        const mensaje = {
+                            Resta: resta,
+                            Puntaje: puntajeNuevo
+                        };
+                        res.send(mensaje);
+                    }
                 }
             } catch (e) {
                 console.error('Error', e);
@@ -103,11 +135,27 @@ export class AppController {
                 const errores: ValidationError[] = await validate(numerosMultiplicacion)
                 if (errores.length > 0) {
                     console.error('Errores: ', errores);
-                    return "Error validando los numeros"
+                    res.send("Error validando los numeros");
                 } else {
                     const multiplicacion = numerosMultiplicacion.n1*numerosMultiplicacion.n2;
-                    const mensaje = {Multiplicacion: multiplicacion};
-                    return mensaje
+                    const puntajeActual = Number(req.signedCookies["puntaje"]);
+                    const puntajeNuevo = puntajeActual-Math.abs(multiplicacion);
+                    if(puntajeNuevo <= 0){
+                        const nombre = req.cookies["usuario"];
+                        const mensaje = {
+                            Multiplicacion: multiplicacion,
+                            Advertencia: nombre.concat(" haz terminado tus puntos, se te han restablecido de nuevo")
+                        };
+                        res.cookie('puntaje', '100', {signed: true});
+                        res.send(mensaje);
+                    }else {
+                        res.cookie('puntaje', puntajeNuevo, {signed: true});
+                        const mensaje = {
+                            Multiplicacion: multiplicacion,
+                            Puntaje: puntajeNuevo
+                        };
+                        res.send(mensaje);
+                    }
                 }
             } catch (e) {
                 console.error('Error', e);
@@ -135,11 +183,27 @@ export class AppController {
                 const errores: ValidationError[] = await validate(numerosDivision)
                 if (errores.length > 0) {
                     console.error('Errores: ', errores);
-                    return "Error validando los numeros, recuerde que n2 no debe ser 0"
+                    res.send("Error validando los numeros, recuerde que n2 no debe ser 0");
                 } else {
                     const division = numerosDivision.n1/numerosDivision.n2;
-                    const mensaje = {Division: division};
-                    return mensaje
+                    const puntajeActual = Number(req.signedCookies["puntaje"]);
+                    const puntajeNuevo = puntajeActual-Math.abs(division);
+                    if(puntajeNuevo <= 0){
+                        const nombre = req.cookies["usuario"];
+                        const mensaje = {
+                            Division: division,
+                            Advertencia: nombre.concat(" haz terminado tus puntos, se te han restablecido de nuevo")
+                        };
+                        res.cookie('puntaje', '100', {signed: true});
+                        res.send(mensaje);
+                    }else {
+                        res.cookie('puntaje', puntajeNuevo, {signed: true});
+                        const mensaje = {
+                            Division: division,
+                            Puntaje: puntajeNuevo
+                        };
+                        res.send(mensaje);
+                    }
                 }
             } catch (e) {
                 console.error('Error', e);
