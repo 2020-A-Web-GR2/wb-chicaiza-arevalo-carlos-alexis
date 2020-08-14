@@ -23,7 +23,7 @@ import {UsuarioEntity} from "./usuario/usuario.entity";
                 entities:[  //todas las entidades
                     UsuarioEntity
                 ],
-                synchronize: true,   //Actualiza el esquema de la base de datos
+                synchronize: false,   //Actualiza el esquema de la base de datos
                 dropSchema: false,  //eliminar datos y el esquema de base de datos
             }),
   ],
