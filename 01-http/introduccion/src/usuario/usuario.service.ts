@@ -22,4 +22,16 @@ export class UsuarioService {
     buscarUno(id: number) {
         return this.repositorio.findOneOrFail(id)    //promesa
     }
+
+    editarUno(usuarioEditado:UsuarioEntity){
+        return this.repositorio.save(usuarioEditado);
+    }
+
+    eliminarUno(id: number){
+        return this.repositorio.delete(id);
+    }
+
+    //usuario tiene varias mascotas
+    //mascota tiene varias vacunas
+
 }

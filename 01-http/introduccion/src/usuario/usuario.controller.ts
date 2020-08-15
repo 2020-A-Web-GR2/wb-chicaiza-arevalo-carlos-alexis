@@ -85,27 +85,43 @@ export class UsuarioController {
     }
 
     @Put(':id')
-    editarUno(
+    async editarUno(
         @Param() parametrosRuta,
         @Body() parametrosCuerpo
     ){
-        const  indice = this.arregloUsuario.findIndex(
-            //(usuario) => usuario.id === Number(parametrosRuta.id)
-            (usuario) => usuario.id === Number(parametrosRuta.id)
-        )
-        this.arregloUsuario[indice].nombre = parametrosCuerpo.nombre;
-        return this.arregloUsuario[indice];
+        const id = Number(parametrosRuta.id);
+        const usuarioEditado = parametrosCuerpo;
+        usuarioEditado.id = id;
+        try{
+            const respuesta = await  this._usuarioService
+                .editarUno(usuarioEditado)
+            return  respuesta;
+        }catch (e) {
+            console.error(e);
+            throw  new NotFoundException({
+                mensaje: 'no existe el registro'
+            });
+        }
     }
 
     @Delete(':id')
-    eliminarUno(
+    async eliminarUno(
         @Param() parametrosRuta
     ){
-        const  indice = this.arregloUsuario.findIndex(
-            //(usuario) => usuario.id === Number(parametrosRuta.id)
-            (usuario) => usuario.id === Number(parametrosRuta.id)
-        )
-        this.arregloUsuario.splice(indice,1)
-        return this.arregloUsuario[indice];
+        const id = Number(parametrosRuta.id);
+        try{
+            const respuesta = await  this._usuarioService
+                .eliminarUno(id)
+            const mensaje = {
+                resultado: 'Registro con id '+id+' eliminado'
+            };
+            return  mensaje;
+        }catch (e) {
+            console.error(e);
+            throw  new NotFoundException({
+                mensaje: 'no existe el registro'
+            });
+        }
+
     }
 }
