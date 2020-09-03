@@ -7,9 +7,10 @@ import {
     InternalServerErrorException, NotFoundException,
     Param,
     Post,
-    Put
+    Put, Res
 } from '@nestjs/common';
 import {UsuarioService} from "./usuario.service";
+import {MascotaService} from "../mascota/mascota.service";
 
 @Controller('usuario')
 export class UsuarioController {
@@ -31,7 +32,8 @@ export class UsuarioController {
 
     //Inyeccion de dependencias
     constructor(
-        private  readonly _usuarioService: UsuarioService
+        private  readonly _usuarioService: UsuarioService,
+        private  readonly _mascotaService: MascotaService,
     ){
 
     }
@@ -123,5 +125,107 @@ export class UsuarioController {
             });
         }
 
+    }
+
+    @Post('crearUsuarioyMascota')
+    async crearUsuarioYCrearMascota(
+        @Body() parametrosCuerpo
+    ){
+        const usuario = parametrosCuerpo.usuario;
+        const mascota = parametrosCuerpo.mascota;
+        //validar usuario y mascota
+        //creacion
+
+        let usuarioCreado;
+        try{
+            usuarioCreado = await this._usuarioService.crearUno(usuario);
+        }catch (e) {
+            console.error(e);
+            throw  new InternalServerErrorException({
+                mensaje: 'Error creando usuario'
+            })
+        }
+
+        if(usuarioCreado){
+            mascota.usuario = usuarioCreado.id;
+            let mascotaCreada;
+            try {
+                mascotaCreada = await this._mascotaService.crearNuevaMascota(mascota);
+            }catch (e) {
+                console.error(e);
+                throw  new InternalServerErrorException({
+                    mensaje: 'Error creando mascota'
+                })
+            }
+
+            if(mascotaCreada){
+                return{
+                    mascota: mascotaCreada,
+                    usuario: usuarioCreado
+                }
+            }else{
+                throw  new InternalServerErrorException({
+                    mensaje: 'Errore creando mascota'
+                })
+            }
+        }else{
+            throw new InternalServerErrorException({
+                mensaje: 'Error creando usario y mascota'
+            })
+        }
+    }
+
+    @Get('vista/usuario')
+    vistaUsuario(
+        @Res() res
+    ){
+        const nombreControlador = 'Carlos';
+        res.render(
+            'ejemplo',//nombre de la vista(archivo)
+            {//parametros de la vista
+                nombre: nombreControlador,//
+            }
+        )
+    }
+
+    @Get('vista/faq')
+    faq(
+        @Res() res
+    ){
+        res.render('usuario/faq')
+    }
+
+    @Get('vista/inicio')
+    async inicio(
+        @Res() res
+    ){
+        let resultadoEncontrado
+        try {
+            resultadoEncontrado = await this._usuarioService.buscarTodos();
+        }catch (e) {
+            throw  new InternalServerErrorException("Error encontrando usuarios")
+        }
+        if(resultadoEncontrado) {
+            res.render('usuario/inicio',
+                {
+                    arregloUsuarios: resultadoEncontrado
+                });
+        }else{
+            throw  new NotFoundException('No se encontraron usuarios')
+        }
+    }
+
+    @Get('vista/login')
+    login(
+        @Res() res
+    ){
+        res.render('usuario/login')
+    }
+
+    @Get('vista/crear')
+    crearUsuarioVista(
+        @Res() res
+    ){
+        res.render('usuario/crear')
     }
 }
