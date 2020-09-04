@@ -7,10 +7,11 @@ import {
     InternalServerErrorException, NotFoundException,
     Param,
     Post,
-    Put, Res
+    Put, Query, Res
 } from '@nestjs/common';
 import {UsuarioService} from "./usuario.service";
 import {MascotaService} from "../mascota/mascota.service";
+import {constants} from "os";
 
 @Controller('usuario')
 export class UsuarioController {
@@ -224,8 +225,69 @@ export class UsuarioController {
 
     @Get('vista/crear')
     crearUsuarioVista(
+        @Query() parametrosConsulta,
         @Res() res
     ){
-        res.render('usuario/crear')
+        return res.render('usuario/crear',{
+            error: parametrosConsulta.error,
+            nombre: parametrosConsulta.nombre,
+            apellido: parametrosConsulta.apellido,
+            cedula: parametrosConsulta.cedula,
+        })
     }
+
+    @Post('crearDesdeVista')
+    async crearDesdeVista(
+        @Body() parametrosCuerpo,
+        @Res() res,
+    ){
+        //validar usuario con DTO
+        let nombreApellidoConsulta;
+        let cedulaConsulta;
+
+        if(parametrosCuerpo.cedula && parametrosCuerpo.nombre && parametrosCuerpo.apellido){
+            nombreApellidoConsulta = `&nombre=${parametrosCuerpo.nombre}&apellido=${parametrosCuerpo.apellido}`
+            if(parametrosCuerpo.cedula.length === 10 ){
+                cedulaConsulta = `&cedula=${parametrosCuerpo.cedula}`
+            }else{
+                const mensajeError = 'Cedula incorrecta'
+                return res.redirect('usuario/vista/crear?error='+mensajeError+ nombreApellidoConsulta)
+            }
+        }else{
+            const mensajeError = 'Datos incompletos'
+            return res.redirect('usuario/vista/crear?error='+mensajeError)
+        }
+        let respuestaCreacionUsuario;
+        try{
+            respuestaCreacionUsuario = await this._usuarioService.crearUno(parametrosCuerpo)
+        }catch (e) {
+            console.error(e)
+            const mensajeError = 'datos incompletos'
+            return res.redirect('usuario/vista/crear?error='+mensajeError+nombreApellidoConsulta)
+        }
+        if(respuestaCreacionUsuario){
+            return res.redirect('/usuario/vista/inicio');
+        }else{
+            const mensajeError = 'datos incompletos'
+            return res.redirect('usuario/vista/crear?error='+mensajeError+nombreApellidoConsulta)
+        }
+    }
+
+    @Post('eliminarDesdeVista/:id')
+    async eliminarDesdeVista(
+        @Param() parametrosRuta,
+        @Res() res,
+    ){
+        try{
+            const  id = Number(parametrosRuta.id);
+            await  this._usuarioService.eliminarUno(id);
+            return res.redirect('/usuario/vista/inicio?mensaje=Usuario Eliminado');
+        }catch (e) {
+            console.log(e);
+            return res.redirect('/usuario/vista/inicio?mensaje=Error Eliminando');
+
+        }
+
+    }
+
 }
