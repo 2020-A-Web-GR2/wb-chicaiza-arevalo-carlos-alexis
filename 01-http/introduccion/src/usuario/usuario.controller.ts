@@ -12,6 +12,7 @@ import {
 import {UsuarioService} from "./usuario.service";
 import {MascotaService} from "../mascota/mascota.service";
 import {constants} from "os";
+import {UsuarioEntity} from "./usuario.entity";
 
 @Controller('usuario')
 export class UsuarioController {
@@ -21,11 +22,11 @@ export class UsuarioController {
             nombre: 'Adrian'
         },
         {
-            id:2,
+            id: 2,
             nombre: 'Vicente'
         },
         {
-            id:3,
+            id: 3,
             nombre: 'Wendy'
         }
     ]
@@ -33,19 +34,19 @@ export class UsuarioController {
 
     //Inyeccion de dependencias
     constructor(
-        private  readonly _usuarioService: UsuarioService,
-        private  readonly _mascotaService: MascotaService,
-    ){
+        private readonly _usuarioService: UsuarioService,
+        private readonly _mascotaService: MascotaService,
+    ) {
 
     }
 
 
     @Get()
-    async mostrarTodos(){
-        try{
+    async mostrarTodos() {
+        try {
             const respuesta = await this._usuarioService.buscarTodos();
             return respuesta;
-        }catch (e) {
+        } catch (e) {
             console.error(e)
             throw new InternalServerErrorException({
                 mensaje: 'Error del servidor'
@@ -57,12 +58,12 @@ export class UsuarioController {
     async crearUno(
         @Body() parametrosCuerpo
     ) {
-        try{
+        try {
             //validacion DTO
 
             const respuesta = await this._usuarioService.crearUno(parametrosCuerpo);
             return respuesta;
-        }catch (e) {
+        } catch (e) {
             console.error(e)
             throw new BadRequestException({
                 mensaje: 'Error validando datos'
@@ -74,12 +75,12 @@ export class UsuarioController {
     @Get(':id')
     async verUno(
         @Param() parametrosRuta
-    ){
-        try{
-            const respuesta = await  this._usuarioService
+    ) {
+        try {
+            const respuesta = await this._usuarioService
                 .buscarUno(Number(parametrosRuta.id));
-            return  respuesta;
-        }catch (e) {
+            return respuesta;
+        } catch (e) {
             console.error(e);
             throw  new NotFoundException({
                 mensaje: 'no existe el registro'
@@ -91,15 +92,15 @@ export class UsuarioController {
     async editarUno(
         @Param() parametrosRuta,
         @Body() parametrosCuerpo
-    ){
+    ) {
         const id = Number(parametrosRuta.id);
         const usuarioEditado = parametrosCuerpo;
         usuarioEditado.id = id;
-        try{
-            const respuesta = await  this._usuarioService
+        try {
+            const respuesta = await this._usuarioService
                 .editarUno(usuarioEditado)
-            return  respuesta;
-        }catch (e) {
+            return respuesta;
+        } catch (e) {
             console.error(e);
             throw  new NotFoundException({
                 mensaje: 'no existe el registro'
@@ -110,16 +111,16 @@ export class UsuarioController {
     @Delete(':id')
     async eliminarUno(
         @Param() parametrosRuta
-    ){
+    ) {
         const id = Number(parametrosRuta.id);
-        try{
-            const respuesta = await  this._usuarioService
+        try {
+            const respuesta = await this._usuarioService
                 .eliminarUno(id)
             const mensaje = {
-                resultado: 'Registro con id '+id+' eliminado'
+                resultado: 'Registro con id ' + id + ' eliminado'
             };
-            return  mensaje;
-        }catch (e) {
+            return mensaje;
+        } catch (e) {
             console.error(e);
             throw  new NotFoundException({
                 mensaje: 'no existe el registro'
@@ -131,45 +132,45 @@ export class UsuarioController {
     @Post('crearUsuarioyMascota')
     async crearUsuarioYCrearMascota(
         @Body() parametrosCuerpo
-    ){
+    ) {
         const usuario = parametrosCuerpo.usuario;
         const mascota = parametrosCuerpo.mascota;
         //validar usuario y mascota
         //creacion
 
         let usuarioCreado;
-        try{
+        try {
             usuarioCreado = await this._usuarioService.crearUno(usuario);
-        }catch (e) {
+        } catch (e) {
             console.error(e);
             throw  new InternalServerErrorException({
                 mensaje: 'Error creando usuario'
             })
         }
 
-        if(usuarioCreado){
+        if (usuarioCreado) {
             mascota.usuario = usuarioCreado.id;
             let mascotaCreada;
             try {
                 mascotaCreada = await this._mascotaService.crearNuevaMascota(mascota);
-            }catch (e) {
+            } catch (e) {
                 console.error(e);
                 throw  new InternalServerErrorException({
                     mensaje: 'Error creando mascota'
                 })
             }
 
-            if(mascotaCreada){
-                return{
+            if (mascotaCreada) {
+                return {
                     mascota: mascotaCreada,
                     usuario: usuarioCreado
                 }
-            }else{
+            } else {
                 throw  new InternalServerErrorException({
                     mensaje: 'Errore creando mascota'
                 })
             }
-        }else{
+        } else {
             throw new InternalServerErrorException({
                 mensaje: 'Error creando usario y mascota'
             })
@@ -179,7 +180,7 @@ export class UsuarioController {
     @Get('vista/usuario')
     vistaUsuario(
         @Res() res
-    ){
+    ) {
         const nombreControlador = 'Carlos';
         res.render(
             'ejemplo',//nombre de la vista(archivo)
@@ -192,26 +193,28 @@ export class UsuarioController {
     @Get('vista/faq')
     faq(
         @Res() res
-    ){
+    ) {
         res.render('usuario/faq')
     }
 
     @Get('vista/inicio')
     async inicio(
-        @Res() res
-    ){
+        @Res() res,
+        @Query() parametrosConsulta
+    ) {
         let resultadoEncontrado
         try {
             resultadoEncontrado = await this._usuarioService.buscarTodos();
-        }catch (e) {
+        } catch (e) {
             throw  new InternalServerErrorException("Error encontrando usuarios")
         }
-        if(resultadoEncontrado) {
+        if (resultadoEncontrado) {
             res.render('usuario/inicio',
                 {
-                    arregloUsuarios: resultadoEncontrado
+                    arregloUsuarios: resultadoEncontrado,
+                    parametrosConsulta: parametrosConsulta
                 });
-        }else{
+        } else {
             throw  new NotFoundException('No se encontraron usuarios')
         }
     }
@@ -219,7 +222,7 @@ export class UsuarioController {
     @Get('vista/login')
     login(
         @Res() res
-    ){
+    ) {
         res.render('usuario/login')
     }
 
@@ -227,8 +230,8 @@ export class UsuarioController {
     crearUsuarioVista(
         @Query() parametrosConsulta,
         @Res() res
-    ){
-        return res.render('usuario/crear',{
+    ) {
+        return res.render('usuario/crear', {
             error: parametrosConsulta.error,
             nombre: parametrosConsulta.nombre,
             apellido: parametrosConsulta.apellido,
@@ -240,36 +243,36 @@ export class UsuarioController {
     async crearDesdeVista(
         @Body() parametrosCuerpo,
         @Res() res,
-    ){
+    ) {
         //validar usuario con DTO
         let nombreApellidoConsulta;
         let cedulaConsulta;
 
-        if(parametrosCuerpo.cedula && parametrosCuerpo.nombre && parametrosCuerpo.apellido){
+        if (parametrosCuerpo.cedula && parametrosCuerpo.nombre && parametrosCuerpo.apellido) {
             nombreApellidoConsulta = `&nombre=${parametrosCuerpo.nombre}&apellido=${parametrosCuerpo.apellido}`
-            if(parametrosCuerpo.cedula.length === 10 ){
+            if (parametrosCuerpo.cedula.length === 10) {
                 cedulaConsulta = `&cedula=${parametrosCuerpo.cedula}`
-            }else{
+            } else {
                 const mensajeError = 'Cedula incorrecta'
-                return res.redirect('usuario/vista/crear?error='+mensajeError+ nombreApellidoConsulta)
+                return res.redirect('usuario/vista/crear?error=' + mensajeError + nombreApellidoConsulta)
             }
-        }else{
+        } else {
             const mensajeError = 'Datos incompletos'
-            return res.redirect('usuario/vista/crear?error='+mensajeError)
+            return res.redirect('usuario/vista/crear?error=' + mensajeError)
         }
         let respuestaCreacionUsuario;
-        try{
+        try {
             respuestaCreacionUsuario = await this._usuarioService.crearUno(parametrosCuerpo)
-        }catch (e) {
+        } catch (e) {
             console.error(e)
             const mensajeError = 'datos incompletos'
-            return res.redirect('usuario/vista/crear?error='+mensajeError+nombreApellidoConsulta)
+            return res.redirect('usuario/vista/crear?error=' + mensajeError + nombreApellidoConsulta)
         }
-        if(respuestaCreacionUsuario){
+        if (respuestaCreacionUsuario) {
             return res.redirect('/usuario/vista/inicio');
-        }else{
+        } else {
             const mensajeError = 'datos incompletos'
-            return res.redirect('usuario/vista/crear?error='+mensajeError+nombreApellidoConsulta)
+            return res.redirect('usuario/vista/crear?error=' + mensajeError + nombreApellidoConsulta)
         }
     }
 
@@ -277,12 +280,12 @@ export class UsuarioController {
     async eliminarDesdeVista(
         @Param() parametrosRuta,
         @Res() res,
-    ){
-        try{
-            const  id = Number(parametrosRuta.id);
-            await  this._usuarioService.eliminarUno(id);
+    ) {
+        try {
+            const id = Number(parametrosRuta.id);
+            await this._usuarioService.eliminarUno(id);
             return res.redirect('/usuario/vista/inicio?mensaje=Usuario Eliminado');
-        }catch (e) {
+        } catch (e) {
             console.log(e);
             return res.redirect('/usuario/vista/inicio?mensaje=Error Eliminando');
 
@@ -290,4 +293,50 @@ export class UsuarioController {
 
     }
 
+    @Get('vista/editar/:id')
+    async editarUsuarioVista(
+        @Query() parametrosConsulta,
+        @Param() parametrosRuta,
+        @Res() res
+    ) {
+        const id = Number(parametrosRuta.id)
+        let usuarioEncontrado;
+        try {
+            usuarioEncontrado = await this._usuarioService.buscarUno(id)
+        } catch (error) {
+            console.error('Error del servidor');
+            return res.redirect('usuario/vista/inicio?mensaje=Error  buscando usuario')
+        }
+        if (usuarioEncontrado) {
+            return res.render(
+                'usuario/crear',
+                {
+                    error: parametrosConsulta.error,
+                    usuario: usuarioEncontrado
+                });
+        } else {
+            return res.redirect('/usuario/vista/inicio?mensaje=Usuario no encontrado');
+        }
+    }
+
+    @Post('editarDesdeVista/:id')
+    async editarDesdeVista(
+        @Param() parametrosRuta,
+        @Body() parametrosCuerpo,
+        @Res() res,
+    ){
+        const usuarioEditado = {
+            id:Number(parametrosRuta.id),
+            nombre: parametrosCuerpo.nombre,
+            apellido: parametrosCuerpo.apellido,
+            //cedula: parametrosCuerpo.cedula,
+        } as UsuarioEntity;
+        try{
+            await  this._usuarioService.editarUno(usuarioEditado);
+            return res.redirect('/usuario/vista/inicio?mensaje=Usuario editado');
+        }catch (e) {
+            console.error(e);
+            return  res.redirect('/usuario/vista/inicio?mensaje=Error editando usuario');
+        }
+    }
 }
