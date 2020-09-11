@@ -17,12 +17,20 @@
         <li><%= objeto%></li>
     <%})%>
 </ul>
-<% if(typeof(parametrosConsulta) != 'undefined'){%>
-        <p>Mensaje: <%= parametrosConsulta.mensaje%></p>
-<%}%>
 <a href = "/usuario/vista/crear">
     <button>crear</button>
 </a>
+
+<% if(typeof(parametrosConsulta) != 'undefined'){%>
+        <p>Mensaje: <%= parametrosConsulta.mensaje%></p>
+<%}%>
+
+<form action="/usuario/vista/inicio"
+      method="GET">
+    <label for="busqueda">Busqueda:</label>
+    <input id="busqueda" type="text" name="busqueda">
+    <button type="submit"> Buscar</button>
+</form>
 
 
 <table>
