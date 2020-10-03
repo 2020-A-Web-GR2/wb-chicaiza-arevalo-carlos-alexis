@@ -1,0 +1,70 @@
+<%- include('./compartido/header/header-component')%>
+<p><%=username%></p>
+<div class="container">
+    <div class="container mb-5">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6 ">
+                <div class="card border-top-0 b border-left-0 border-right-0 radius-card-head">
+                    <div class="card-header rounded-top card-title-color text-center radius-card-body">
+                        <h4>Inicio</h4>
+                    </div>
+                    <div class="card-body px-5 py-4">
+
+                        <% if(typeof error != 'undefined'){%>
+                            <p>Mensaje: <%= error%></p>
+                        <%}%>
+                        <% if(typeof mensaje != 'undefined'){%>
+                            <p>Mensaje: <%= mensaje%></p>
+                        <%}%>
+
+                        <form action="/universidad/inicio"
+                              method="Post">
+                            <label for="busqueda">Busqueda:</label>
+                            <input id="busqueda" type="text" name="busqueda">
+                            <button type="submit" class="btn-secondary"> Buscar</button>
+                        </form>
+                            <a href = "/universidad/crear">
+                                <button class="btn-primary">crear</button>
+                            </a>
+                        <table class="table-bordered">
+                            <!--table row-->
+                            <tr class="table-hover">
+                                <th>Nombre</th>
+                                <th>Fundador</th>
+                                <th>Anio</th>
+                                <th>Direccion</th>
+                                <th>Categoria</th>
+                            </tr>
+                            <%if(typeof consulta != 'undefined'){%>
+                            <% consulta.forEach((objeto)=>{%>
+                                    <tr>
+                                        <td><%= objeto.nombreUniversidad%></td>
+                                        <td><%=objeto.fundador%></td>
+                                        <td><%=objeto.anioFundacion%></td>
+                                        <td><%=objeto.direccion%></td>
+                                        <td><%=objeto.categoria%></td>
+                                        <td>
+                                            <a href="/universidad/editar/<%= objeto.id%>">
+                                                <button class="btn-dark">Editar</button>
+                                            </a>
+
+                                            <form action="/universidad/eliminar/<%= objeto.id %>"
+                                                  method="POST"
+                                            >
+                                                <button type="submit" class="btn-dark">Eliminar</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <%})%>
+                            <%}%>
+                        </table>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('./compartido/footer/footer-component')%>
