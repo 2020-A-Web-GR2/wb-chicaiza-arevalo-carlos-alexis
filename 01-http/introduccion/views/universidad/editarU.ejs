@@ -1,0 +1,71 @@
+<%- include('./compartido/header/header-component')%>
+
+<div class="container">
+    <div class="container">
+        <br>
+
+        <% if(typeof error !== 'undefined'){%>
+            <div class="alert alert-danger" role="alert">
+                Error: <%= error%>
+            </div>
+        <%}%>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6 ">
+                <div class="card border-top-0 b border-left-0 border-right-0 radius-card-head">
+                    <div class="card-header rounded-top card-title-color text-center radius-card-body">
+                        <h4><strong>Información de Universidad</strong></h4>
+                    </div>
+                    <div class="card-body px-5 py-4">
+                        <form action="/universidad/editarDesdeVista"
+                              method="POST">
+                            <div class="form-group">
+                                <label for="nombreUniversidad">Nombre de la universidad</label>
+                                <input id="nombreUniversidad" type="text" name="nombreUniversidad"
+                                       class="form-control" placeholder="Nombre" value="<%= universidad.nombreUniversidad %>"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="fundadorID">Fundador</label>
+                                <input id="fundadorID" type="text" name="fundador"
+                                       class="form-control" placeholder="Fundador"
+                                       value="<%= universidad.fundador %>">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="anioFundacionID">Anio Fundacion</label>
+                                <input id="anionFundacionID" type="date" name="anioFundacion"
+                                       class="form-control" placeholder="Anio"
+                                       value="<%= universidad.anioFundacion %>">
+                            </div>
+                            <div class="form-group">
+                                <label for="direccionID">Direccion</label>
+                                <input id="direccionID" type="text" name="direccion"
+                                       class="form-control" placeholder="Direccion"
+                                       value="<%= universidad.direccion%>">
+                            </div>
+                            <div class="form-group">
+                                <input hidden id= idID name="id" type="text" value="<%=id%>">
+                            </div>
+                            <div class="form-group">
+                                <label for="categoriaID">Seleccione la categoria</label>
+                                <select class="form-control" id="categoriaID" name="categoria">
+                                    <option>Escoja uno...</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Editar</button>
+                            <button type="reset" class="btn btn-primary">Limpiar Campos</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>
+</div>
+
+<%- include('./compartido/footer/footer-component')%>

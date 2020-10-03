@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title><%=titulo%> | Universidad</title>
+        <link rel="stylesheet" href="./../introduccion/publico/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./../introduccion/publico/css/estilos.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <%if(controlador == 'signup' || controlador == 'login') {%>
+        <body id="fondoLoginSignup">
+    <%}else if(controlador == 'home'){%>
+        <body class="fondoHome">
+    <%}else{%>
+        <body>
+    <%}%>
+

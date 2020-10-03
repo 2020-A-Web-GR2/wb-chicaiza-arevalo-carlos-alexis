@@ -1,7 +1,298 @@
-body{
-    font-family: Arial;
-    color:black;
+#fondoLoginSignup {
+    background-image: url(/01-http/introduccion/src/examen/recursos/universidadFis.jpg);
+    background-position: center;
+    background-size: contain;
+    position: center;
 }
-th, td{
-    border: 1px solid #dddddd;
+
+img.fondoHome {
+    width: 100%;
+}
+
+h1.formularioTitulo{
+    text-align:center
+}
+
+
+.tituloHome{
+    font-weight: bold;
+    font-size: 30px;
+    text-align: left;
+    color: #1d2124;
+}
+
+.subtituloHome{
+    font-size: 20px;
+    text-align: left;
+}
+
+.btn-home-buscar-empleo{
+    border-radius: 50px 50px 50px 50px;
+}
+
+.border-2{
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 0%;
+    background-color: #f8f9fa;
+}
+
+.jumbotron-titulo{
+    font-weight: normal ;
+    font-size: 40px ;
+    text-align: center;
+}
+
+
+.a-no-underline{
+    text-decoration: none;
+    color: black;
+}
+.a-no-underline:hover{
+    text-decoration: none;
+    color: #17a2b8;
+}
+
+.border-1{
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 0%;
+}
+
+
+
+.card-text-title{
+    font-weight: bold !important;
+    font-size: 120%;
+
+}
+
+.border-1-navbar{
+    border-radius: 0%;
+}
+
+.card-title-color{
+    background-color: #8B97FF;
+}
+
+.radius-card-head{
+    border-radius: 50px;
+}
+.radius-card-body{
+    border-top-right-radius: 50px !important;
+    border-top-left-radius: 50px !important;
+}
+
+.error-message{
+    color: red;
+}
+.campo-obligatorio{
+    color:#17a2b8;
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.center {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.about-text h3 {
+    font-size: 45px;
+    font-weight: 700;
+    margin: 0 0 6px;
+}
+@media (max-width: 767px) {
+    .about-text h3 {
+        font-size: 35px;
+    }
+}
+.about-text h6 {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+@media (max-width: 767px) {
+    .about-text h6 {
+        font-size: 18px;
+    }
+}
+.about-text p {
+    font-size: 18px;
+    max-width: 450px;
+}
+.about-text p mark {
+    font-weight: 600;
+    color: #20247b;
+}
+
+.about-list {
+    padding-top: 10px;
+}
+.about-list .media {
+    padding: 5px 0;
+}
+.about-list label {
+    color: #20247b;
+    font-weight: 600;
+    width: 88px;
+    margin: 0;
+    position: relative;
+}
+.about-list label:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 11px;
+    width: 1px;
+    height: 12px;
+    background: #20247b;
+    -moz-transform: rotate(15deg);
+    -o-transform: rotate(15deg);
+    -ms-transform: rotate(15deg);
+    -webkit-transform: rotate(15deg);
+    transform: rotate(15deg);
+    margin: auto;
+    opacity: 0.5;
+}
+.about-list p {
+    margin: 0;
+    font-size: 15px;
+}
+
+@media (max-width: 991px) {
+    .about-avatar {
+        margin-top: 30px;
+    }
+}
+
+.about-section .counter {
+    padding: 22px 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(31, 45, 61, 0.125);
+}
+.about-section .counter .count-data {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.about-section .counter .count {
+    font-weight: 700;
+    color: #20247b;
+    margin: 0 0 5px;
+}
+.about-section .counter p {
+    font-weight: 600;
+    margin: 0;
+}
+mark {
+    background-image: linear-gradient(rgba(252, 83, 86, 0.6), rgba(252, 83, 86, 0.6));
+    background-size: 100% 3px;
+    background-repeat: no-repeat;
+    background-position: 0 bottom;
+    background-color: transparent;
+    padding: 0;
+    color: currentColor;
+}
+.theme-color {
+    color: #fc5356;
+}
+.dark-color {
+    color: #20247b;
+}
+.profileBackground{
+    color: #6F8BA4;
+    margin-top:20px;
+    background-color: white;
+    border: 1px solid black
+}
+
+.mycontent-right {
+    border-left: 2px solid black;
+}
+
+.mycontent-right-card{
+    border-left: 1px solid black;
+}
+
+.ul-aplicacion{
+    border-radius: 0;
+}
+
+.li-aplicacion{
+    border: 1px solid black;;
+}
+
+.punto-medio-aplicacion{
+    font-weight: bold ;
+}
+
+.btn-size-navbar{
+    width: 200px;
+}
+.color-font-profile{
+    color: black;
+}
+
+.hr-card-empleo{
+    width: 100%;
+    background-color: #95999c;
+    margin-left: 0px;
+}
+
+.btn-size-profile{
+    width: 100px;
+}
+
+.input-bg-light{
+    background-color: #f8f9fa;
+}
+
+.card-publicacion-titulo{
+    font-weight: bold !important;
+    font-size: 150%;
+    color: black;
+}
+
+.card-publicacion-subtitulo{
+    font-size: 150%;
+    color: black;
+}
+
+.card-publicacion{
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+}
+
+.hr-card-publicacion{
+    width: 100%;
+    background-color: #95999c;
+    margin-left: 35px;
+    margin-right: 35px;
+}
+
+.card-publicacion-titulo-aplicacion{
+    font-weight: bold;
+    font-size: 120%;
+    color: black;
+}
+
+.card-publicacion-subtitulo-aplicacion{
+    font-size: 120%;
+    color: black;
 }

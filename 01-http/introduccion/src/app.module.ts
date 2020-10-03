@@ -9,11 +9,14 @@ import {MascotaModule} from "./mascota/mascota.module";
 import {VacunaModule} from "./vacuna/vacuna.module";
 import {VacunaEntity} from "./vacuna/vacuna.entity";
 import {MascotaEntity} from "./mascota/mascota.entity";
+import {UniversidadModule} from "./examen/universidad/universidad.module";
+import {UniversidadEntity} from "./examen/universidad/universidad.entity";
 
 @Module({
   imports: [
       //aqui otro modulos
         HttpJuegoModule,
+        UniversidadModule,
         UsuarioModule,
         MascotaModule,
         VacunaModule,
@@ -29,7 +32,8 @@ import {MascotaEntity} from "./mascota/mascota.entity";
                 entities:[  //todas las entidades
                     UsuarioEntity,
                     VacunaEntity,
-                    MascotaEntity
+                    MascotaEntity,
+                    UniversidadEntity,
                 ],
                 synchronize: true,   //Actualiza el esquema de la base de datos
                 dropSchema: false,  //eliminar datos y el esquema de base de datos

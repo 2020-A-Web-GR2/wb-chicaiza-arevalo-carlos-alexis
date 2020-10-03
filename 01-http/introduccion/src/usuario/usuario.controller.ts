@@ -305,8 +305,7 @@ export class UsuarioController {
             usuarioEncontrado = await this._usuarioService.buscarUno(id)
         } catch (error) {
             console.error('Error del servidor');
-            return res.redirect('usuario/vista/inicio?mensaje=Error  buscando usuario')
-        }
+            return res.redirect('usuario/vista/inicio?mensaje=Error  buscando usuario')        }
         if (usuarioEncontrado) {
             return res.render(
                 'usuario/crear',
