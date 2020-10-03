@@ -82,7 +82,7 @@ export class UniversidadController{
                     username: session.currentUser,
                 });
         }else{
-            return res.redirect('home')
+           6)
         }
     }
 
